@@ -6,7 +6,11 @@ on:
     branches: [ main ]
     paths: [ 'scan_freenew.py' ]
   schedule:
-    - cron: '45 1 */7 * *'
+    - cron: '45 3 */7 * *'
+
+concurrency:
+  group: scanner
+  cancel-in-progress: false
 
 jobs:
   scan-ips:

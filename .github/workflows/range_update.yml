@@ -2,9 +2,12 @@ name: Weekly IP Range Update
 
 on:
   schedule:
-    # 每周日晚上10点运行 (UTC时间)
-    - cron: '0 22 * * 0'
-  workflow_dispatch: # 允许手动触发
+    - cron: '0 11 * * 0'
+  workflow_dispatch:
+
+concurrency:
+  group: raw
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -154,6 +157,7 @@ jobs:
           # 配置Git并提交
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git pull origin ${{ github.ref_name }} --rebase
           git add range.txt
           git commit -m "$commit_msg"
           git push origin HEAD:${{ github.ref_name }}
